@@ -1,0 +1,20 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Model;
+
+class {{ class }} extends Model
+{
+    public $timestamps = false;
+    protected $table = '';
+    protected $primaryKey = '';
+
+    protected $guarded = [];
+
+    protected $appends = [];
+
+    protected $hidden = [];
+
+    protected $casts = [];
+}
