@@ -85,6 +85,11 @@ Route::middleware('config')->group(function ()
             {
                 Route::put('/', [AuthController::class, 'changePassword']);
             });
+
+            Route::prefix('/push')->group(function ()
+            {
+                Route::post('/', [ProfileController::class, 'storePush']);
+            });
         });
 
         Route::prefix('/accounts')->group(function ()

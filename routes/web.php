@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function ()
+{
+    return response()->json([
+        'message' => 'Welcome to the Mobirock API'
+    ]);
+});
+
 Route::prefix('/reports')->group(function ()
 {
     Route::get('/{year}/{month}/{day}/{id}/{file}', [ReportsController::class, 'get']);

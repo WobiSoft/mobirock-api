@@ -5,39 +5,41 @@ namespace App\Http\Controllers\V1\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\ProfileUpdate;
 use App\Models\User;
+use App\Models\UserPush;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
+    public function storePush(Request $request)
+    {
+        $user = $request->auth->user;
+        $uuid = $request->config->uuid;
+        $token = $request->post('token');
+
+        UserPush::updateOrCreate([
+            'user_id' => $user->id,
+            'uuid' => $uuid,
+        ], [
+            'token' => $token,
+        ]);
+
+        return response()->json([
+            'message' => 'Push Token registrado correctamente.',
+        ]);
+    }
+
     public function show(Request $request)
     {
         $user = $request->auth->user;
@@ -47,13 +49,6 @@ class ProfileController extends Controller
         return response()->json(['data' => $user]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function update(ProfileUpdate $request)
     {
         $user = request()->auth->user;
@@ -125,12 +120,6 @@ class ProfileController extends Controller
         return response()->json(['message' => 'Perfil actualizado correctamente']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(User $user)
     {
         //

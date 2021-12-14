@@ -10,6 +10,7 @@ use App\Http\Requests\V1\AuthLogin;
 use App\Http\Requests\V1\AuthRenew;
 use App\Http\Requests\V1\ChangePassword;
 use App\Models\Connection;
+use App\Models\Device;
 use App\Models\UserSession;
 use App\Models\User;
 use App\Notifications\ForgottenPassword;
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\Hash;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Notification;
+
+use Jenssegers\Agent\Agent;
 
 class AuthController extends Controller
 {
@@ -48,6 +51,29 @@ class AuthController extends Controller
                 'message' => 'Esta Contraseña es incorrecta.'
             ], 401);
         }
+
+        $agent = new Agent();
+
+        Device::updateOrCreate([
+            'dispositivo_concesionario' => $user->id,
+            'dispositivo_uuid' => request()->config->uuid
+        ], [
+            'dispositivo_nombre' => "{$agent->platform()} {$agent->version($agent->platform())} (" . (!$agent->isDesktop() ? $agent->device() : ($agent->browser() . " " . $agent->version($agent->browser()))) . ")",
+            'dispositivo_info' => [
+                "device" => $agent->device(),
+                "isDesktop" => $agent->isDesktop(),
+                "isMobile" => $agent->isMobile(),
+                "isTablet" => $agent->isTablet(),
+                "isPhone" => $agent->isPhone(),
+                "isRobot" => $agent->isRobot(),
+                "browser"   => $agent->browser(),
+                "browserVersion"   => $agent->version($agent->browser()),
+                "platform"  => $agent->platform(),
+                "platformVersion"  => $agent->version($agent->platform()),
+            ],
+            'dispositivo_plataforma' => request()->config->platform,
+            'dispositivo_status' => 1
+        ]);
 
         $session = UserSession::whereSesionConcesionario($user->id)
             ->whereSesionDispositivo(request()->config->uuid)
@@ -197,6 +223,29 @@ class AuthController extends Controller
 
         $user->update([
             'concesionario_password' => Hash::make($data['password'])
+        ]);
+
+        $agent = new Agent();
+
+        Device::updateOrCreate([
+            'dispositivo_concesionario' => $user->id,
+            'dispositivo_uuid' => request()->config->uuid
+        ], [
+            'dispositivo_nombre' => "{$agent->platform()} {$agent->version($agent->platform())} (" . (!$agent->isDesktop() ? $agent->device() : ($agent->browser() . " " . $agent->version($agent->browser()))) . ")",
+            'dispositivo_info' => [
+                "device" => $agent->device(),
+                "isDesktop" => $agent->isDesktop(),
+                "isMobile" => $agent->isMobile(),
+                "isTablet" => $agent->isTablet(),
+                "isPhone" => $agent->isPhone(),
+                "isRobot" => $agent->isRobot(),
+                "browser"   => $agent->browser(),
+                "browserVersion"   => $agent->version($agent->browser()),
+                "platform"  => $agent->platform(),
+                "platformVersion"  => $agent->version($agent->platform()),
+            ],
+            'dispositivo_plataforma' => request()->config->platform,
+            'dispositivo_status' => 1
         ]);
 
         $session = UserSession::whereSesionConcesionario($user->id)
