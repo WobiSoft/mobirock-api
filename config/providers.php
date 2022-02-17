@@ -135,4 +135,18 @@ return [
         'key'  => env('PROVIDER_newchangarro_telcel_KEY', NULL),
     ],
 
+    'saldovirtual_movistar' => (object) [
+        'url'  => env('PROVIDER_saldovirtual_movistar_URL', NULL),
+        'id'   => env('PROVIDER_saldovirtual_movistar_ID', NULL),
+        'user' => env('PROVIDER_saldovirtual_movistar_USER', NULL),
+        'key'  => env('PROVIDER_saldovirtual_movistar_KEY', NULL),
+    ],
+
+    'saldovirtual_att' => (object) [
+        'url'  => env('PROVIDER_saldovirtual_att_URL', NULL),
+        'id'   => env('PROVIDER_saldovirtual_att_ID', NULL),
+        'user' => env('PROVIDER_saldovirtual_att_USER', NULL),
+        'key'  => env('PROVIDER_saldovirtual_att_KEY', NULL),
+    ],
+
 ];

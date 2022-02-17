@@ -27,7 +27,7 @@ class AuthLogin extends FormRequest
             'username.required' => 'Debes enviar tu No. de Usuario.',
             'username.numeric'  => 'Este es un No. de Usuario inválido.',
             'username.min'      => 'El No. de Usuario debe contener al menos 8 dígitos.',
-            'username.min'      => 'Este No. de Usuario no existe en la base de datos.',
+            'username.exists'   => 'Este No. de Usuario no existe en la base de datos.',
             'password.required' => 'Debes enviar tu Contraseña',
         ];
     }

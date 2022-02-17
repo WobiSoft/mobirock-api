@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\V1\TestsController;
 use App\Http\Controllers\V1\WEB\ReportsController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,11 @@ Route::get('/', function ()
     return response()->json([
         'message' => 'Welcome to the Mobirock API'
     ]);
+});
+
+Route::prefix('/tests')->group(function ()
+{
+    Route::get('/svbalance', [TestsController::class, 'svbalance']);
 });
 
 Route::prefix('/reports')->group(function ()
